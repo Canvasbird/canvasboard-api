@@ -1,0 +1,597 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Canvasboard API",
+    "description": "### This is a canvasboard api server.  You can find out more about it here [Canvasboard Backend](https://github.com/Canvasbird/canvasboard-backend).",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.canvasboard.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user"
+    },
+    {
+      "name": "files"
+    },
+    {
+      "name": "folders"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Authenticating User.",
+        "description": "providing session token for authenticated user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns login token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sucess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Invalid Credientials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Registering new user.",
+        "description": "Creating a new user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "institute_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user registered Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "user resgistraion failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Something went wrong, try again later."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/forgot": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "To create new password.",
+        "description": "To create new password for the user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "reset password link has been sent to user email.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "reset password has been sent to your email."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user email does not exist in database.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "invalid email."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "To reset password.",
+        "description": "To change forgot password.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reset_token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "password has been changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password has been changed successfull."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "invalid token."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/create-folder": {
+      "post": {
+        "tags": [
+          "folders"
+        ],
+        "summary": "To create new folder.",
+        "description": "Folder Creation.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folder_name": {
+                    "type": "string"
+                  },
+                  "folder_title": {
+                    "type": "string"
+                  },
+                  "folder_tag": {
+                    "type": "string"
+                  },
+                  "is_nested_folder": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder Created Successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": {
+                        "$ref": "#/components/schemas/Folder"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/rename-folder": {
+      "post": {
+        "tags": [
+          "folders"
+        ],
+        "summary": "To change folder attributes.",
+        "description": "Folder Modification.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folder_name": {
+                    "type": "string"
+                  },
+                  "folder_title": {
+                    "type": "string"
+                  },
+                  "folder_tag": {
+                    "type": "string"
+                  },
+                  "is_nested_folder": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder Modified Successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": {
+                        "$ref": "#/components/schemas/Folder"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/folder/create-file": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "To create new file.",
+        "description": "File Creation.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folder_id": {
+                    "type": "string"
+                  },
+                  "file_name": {
+                    "type": "string"
+                  },
+                  "file_tag": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File Created Successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Folder": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5d6ede6a0ba62570afcedd3a"
+          },
+          "folder_name": {
+            "type": "string",
+            "example": "college"
+          },
+          "folder_title": {
+            "type": "string",
+            "example": "computer science"
+          },
+          "folder_tag": {
+            "type": "string",
+            "example": "important"
+          },
+          "is_nested_folder": {
+            "type": "boolean",
+            "default": false
+          },
+          "last_accessed_on": {
+            "type": "string"
+          },
+          "last_modified_on": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
