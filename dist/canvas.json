@@ -331,6 +331,12 @@
                   "folder_tag": {
                     "type": "string"
                   },
+                  "folder_color": {
+                    "type": "string"
+                  },
+                  "is_pinned": {
+                    "type": "boolean"
+                  },
                   "is_nested_folder": {
                     "type": "string"
                   }
@@ -415,6 +421,12 @@
                   "folder_title": {
                     "type": "string"
                   },
+                  "folder_color": {
+                    "type": "string"
+                  },
+                  "is_pinned": {
+                    "type": "boolean"
+                  },
                   "folder_tag": {
                     "type": "string"
                   },
@@ -442,6 +454,163 @@
                       "example": {
                         "$ref": "#/components/schemas/Folder"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/remove-folder": {
+      "post": {
+        "tags": [
+          "folders"
+        ],
+        "summary": "To remove existing folder.",
+        "description": "Folder Deletion.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folder_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder Removed Successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "type": "boolean",
+                      "example": "nulll"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/view-folder": {
+      "post": {
+        "tags": [
+          "folders"
+        ],
+        "summary": "To fetch all folders.",
+        "description": "Folders Retrieved.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "folder_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folders fetched successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": [
+                        {
+                          "$ref": "#/components/schemas/Folder"
+                        }
+                      ]
                     }
                   }
                 }
@@ -558,6 +727,248 @@
           }
         }
       }
+    },
+    "/user/folder/rename-file": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "To change file attributes.",
+        "description": "File Modification.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  },
+                  "file_name": {
+                    "type": "string"
+                  },
+                  "file_tag": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File Created Successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": {
+                        "$ref": "#/components/schemas/File"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/folder/remove-file": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "To remove files.",
+        "description": "File Deletion.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  },
+                  "folder_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/folder/files/{folder_id}": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "To remove files.",
+        "description": "File Deletion.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-AUTH-TOKEN",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "folder_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch files.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "example": [
+                        {
+                          "$ref": "#/components/schemas/File"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong. please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -580,9 +991,46 @@
             "type": "string",
             "example": "important"
           },
+          "folder_color": {
+            "type": "string",
+            "example": "green"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "example": false
+          },
           "is_nested_folder": {
             "type": "boolean",
             "default": false
+          },
+          "last_accessed_on": {
+            "type": "string"
+          },
+          "last_modified_on": {
+            "type": "string"
+          }
+        }
+      },
+      "File": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5d6ede6a0ba62570afcedd3a"
+          },
+          "file_name": {
+            "type": "string",
+            "example": "college"
+          },
+          "file_tag": {
+            "type": "string",
+            "example": "computer science"
+          },
+          "data": {
+            "type": "object"
+          },
+          "created_on": {
+            "type": "string",
+            "example": "22-9-2020"
           },
           "last_accessed_on": {
             "type": "string"
